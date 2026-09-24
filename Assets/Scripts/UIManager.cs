@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("UIManager Starting...");
         resetButton.onClick.AddListener(RestartGame);
         RestartGame();
     }

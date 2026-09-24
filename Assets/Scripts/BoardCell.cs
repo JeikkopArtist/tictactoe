@@ -21,19 +21,17 @@ public class BoardCell : MonoBehaviour
 
         // Buscamos el UIManager ascendiendo en la jerarquía (se encuentra en el Canvas)
         uiManager = GetComponentInParent<UIManager>();
-        
-        // debug: presentación
-        Debug.Log("Soy el boton" + button.name + ", y tengo como pieza = '" + GameManager.Board[row, col] + "'");
     }
 
     private void OnCellClicked()
     {
-        Debug.Log("Clickando el boton" + button.name);
         // 1. Intentamos la jugada en la lógica estática del juego
         if (GameManager.PlayMove(row, col))
         {
             // 2. Notificamos al UIManager que hemos encontrado en nuestro Canvas
             uiManager.UpdateUI();
+            // 3. Actualizar casilla con pieza del jugador (aunque el UIManager actualiza a todas en cada mano)
+            Refresh();
         }
     }
 
@@ -41,7 +39,5 @@ public class BoardCell : MonoBehaviour
     {
         CellState state = GameManager.Board[row, col];
         cellText.text = (state == CellState.Empty) ? "" : state.ToString();
-        // debug: presentación
-        Debug.Log("Refrescando el boton" + button.name + ", y tengo como pieza = '" + GameManager.Board[row, col] + "'");
     }
 }
