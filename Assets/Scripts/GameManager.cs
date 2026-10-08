@@ -1,5 +1,7 @@
 public enum CellState { Empty, X, O }
 
+public enum Player { Human, System }
+
 public static class GameManager
 {
     // Tablero de 3x3

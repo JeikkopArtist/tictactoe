@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private Button resetButton;
 
+    [Header("Control de jugadores")] 
+    [SerializeField] private SystemWOPR playerX = null;
+    [SerializeField] private SystemWOPR playerO = null;
+
     private void Start()
     {
         resetButton.onClick.AddListener(RestartGame);
@@ -46,6 +50,23 @@ public class UIManager : MonoBehaviour
         else
         {
             statusText.text = $"Turno actual: {GameManager.CurrentTurn}";
+            // Si el turno actual es un jugador controlado por el sistema... "invitarle" a poner ficha
+            if (GameManager.CurrentTurn == CellState.X)
+            {
+                if (playerX != null)
+                {
+                    playerX.Move(CellState.X);
+                    UpdateUI();
+                }
+            }
+            else if (GameManager.CurrentTurn == CellState.O)
+            {
+                if (playerO != null)
+                {
+                    playerO.Move(CellState.O);
+                    UpdateUI();
+                }
+            }
         }
     }
 }
