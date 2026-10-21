@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class SystemWOPR : MonoBehaviour
+public class SystemWopr : MonoBehaviour
 {
    [SerializeField] private CellState playerPiece = CellState.X;
    
@@ -11,12 +11,12 @@ public class SystemWOPR : MonoBehaviour
    
    private void Update()
    {
-      if (GameManager.IsGameOver)
+      if (GameManager.Instance.IsGameOver)
       {
          return;
       } 
       
-      if (GameManager.CurrentTurn == playerPiece)
+      if (GameManager.Instance.CurrentTurn == playerPiece)
       {
          Move(playerPiece);
          uiManager.UpdateUI();
@@ -27,13 +27,13 @@ public class SystemWOPR : MonoBehaviour
    public void Move(CellState piece)
    {
       // Buscar jugadas ganadoras
-      CellState[,] BoardIA = GameManager.Board; 
+      CellState[,] boardIa = GameManager.Instance.Board.Clone() as CellState[,]; 
       int i = 0;
-      foreach (CellState cellState in BoardIA)
+      foreach (CellState cellState in boardIa)
       {
-         if (TryMove(BoardIA, i / 3, i % 3, piece))
+         if (TryMove(boardIa, i / 3, i % 3, piece))
          {
-            GameManager.PlayMove(i / 3, i % 3);
+            GameManager.Instance.PlayMove(i / 3, i % 3);
             return;
          }
          i++;
@@ -41,19 +41,19 @@ public class SystemWOPR : MonoBehaviour
       // Evitar jugadas ganadoras del rival
       CellState human = (piece == CellState.O ? CellState.X : CellState.O);
       i = 0;
-      foreach (CellState cellState in BoardIA)
+      foreach (CellState cellState in boardIa)
       {
-         if (TryMove(BoardIA, i / 3, i % 3, human))
+         if (TryMove(boardIa, i / 3, i % 3, human))
          {
-            GameManager.PlayMove(i / 3, i % 3);
+            GameManager.Instance.PlayMove(i / 3, i % 3);
             return;
          }
          i++;
       }
       // Casilla central
-      if (GameManager.Board[1, 1] == CellState.Empty)
+      if (GameManager.Instance.Board[1, 1] == CellState.Empty)
       {
-         GameManager.PlayMove(1, 1);
+         GameManager.Instance.PlayMove(1, 1);
          return;
       }
       // Casillas de esquina
@@ -63,9 +63,9 @@ public class SystemWOPR : MonoBehaviour
       {
          // aleatorio entre 0 y la longitud del array de celdas
          int r = Random.Range(0, celdas.Count);
-         if (GameManager.Board[celdas[r].Item1, celdas[r].Item2] == CellState.Empty)
+         if (GameManager.Instance.Board[celdas[r].Item1, celdas[r].Item2] == CellState.Empty)
          {
-            GameManager.PlayMove(celdas[r].Item1, celdas[r].Item2);
+            GameManager.Instance.PlayMove(celdas[r].Item1, celdas[r].Item2);
             return;
          }
          // elimina la celda ocupa de la lista de posibles
@@ -78,9 +78,9 @@ public class SystemWOPR : MonoBehaviour
       {
          // aleatorio entre 0 y la longitud del array de celdas
          int r = Random.Range(0, celdas.Count);
-         if (GameManager.Board[celdas[r].Item1, celdas[r].Item2] == CellState.Empty)
+         if (GameManager.Instance.Board[celdas[r].Item1, celdas[r].Item2] == CellState.Empty)
          {
-            GameManager.PlayMove(celdas[r].Item1, celdas[r].Item2);
+            GameManager.Instance.PlayMove(celdas[r].Item1, celdas[r].Item2);
             return;
          }
          // elimina la celda ocupa de la lista de posibles

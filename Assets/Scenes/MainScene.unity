@@ -2162,7 +2162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0463a24d3e9638a4a8ca507f9abb29c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SystemWOPR
-  playerPiece: 2
+  playerPiece: 0
   uiManager: {fileID: 1599824188}
 --- !u!4 &1302399617
 Transform:
