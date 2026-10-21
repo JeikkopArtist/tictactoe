@@ -7,7 +7,7 @@ public class SystemWopr : MonoBehaviour
 {
    [SerializeField] private CellState playerPiece = CellState.X;
    
-   [SerializeField] private UIManager uiManager;
+  
    
    private void Update()
    {
@@ -19,7 +19,6 @@ public class SystemWopr : MonoBehaviour
       if (GameManager.Instance.CurrentTurn == playerPiece)
       {
          Move(playerPiece);
-         uiManager.UpdateUI();
       } 
    }
    
