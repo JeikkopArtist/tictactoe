@@ -1,72 +1,58 @@
-using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
+using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    [Header("Referencias del Tablero")]
-    [SerializeField] private BoardCell[] boardCells; // Las 9 casillas arrastradas al Inspector
+    
+    [SerializeField] private BoardCell[] boardsCell;
 
-    [Header("Interfaz de Estado")]
     [SerializeField] private TextMeshProUGUI statusText;
-    [SerializeField] private Button resetButton;
-
-    [Header("Control de jugadores")] 
-    [SerializeField] private SystemWOPR playerX = null;
-    [SerializeField] private SystemWOPR playerO = null;
-
-    private void Start()
+    
+    
+    void Start()
     {
-        resetButton.onClick.AddListener(RestartGame);
-        RestartGame();
+        Reset();
+    }
+    
+    // Gestión del click sobre el botón de RESET
+    public void OnClickReset()
+    {
+        Reset();
     }
 
-    public void RestartGame()
+    private void Reset()
     {
+        // Limpia el Tablero (modelo)
         GameManager.StartNewGame();
+        // Actualiza la interface de usuario
         UpdateUI();
     }
 
     public void UpdateUI()
     {
-        // 1. Pedir a cada casilla que se actualice
-        foreach (BoardCell cell in boardCells)
+        // Actualiza el símbolo de cada celda en pantalla
+        foreach (BoardCell boardCell in boardsCell)
         {
-            cell.Refresh();
+            boardCell.Refresh();
         }
-
-        // 2. Actualizar el texto del estado del juego
+        
+        // Actualiza el texto de estado
         if (GameManager.IsGameOver)
         {
+            // poner ganador o empate
             if (GameManager.Winner == CellState.Empty)
             {
-                statusText.text = "¡Empate!";
+                statusText.text = "¡ Empate !";
             }
             else
             {
-                statusText.text = $"¡Ganador: {GameManager.Winner}!";
+                statusText.text = $"¡ Ganador: {GameManager.Winner} !";
             }
         }
         else
         {
+            // informar del turno actual
             statusText.text = $"Turno actual: {GameManager.CurrentTurn}";
-            // Si el turno actual es un jugador controlado por el sistema... "invitarle" a poner ficha
-            if (GameManager.CurrentTurn == CellState.X)
-            {
-                if (playerX != null)
-                {
-                    playerX.Move(CellState.X);
-                    UpdateUI();
-                }
-            }
-            else if (GameManager.CurrentTurn == CellState.O)
-            {
-                if (playerO != null)
-                {
-                    playerO.Move(CellState.O);
-                    UpdateUI();
-                }
-            }
         }
     }
 }
