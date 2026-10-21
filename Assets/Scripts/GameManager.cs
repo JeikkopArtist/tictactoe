@@ -4,6 +4,11 @@ public enum CellState { Empty, X, O }
 
 public class GameManager : MonoBehaviour
 {
+
+    [SerializeField] private Transform cellsContainer;
+    [SerializeField] private  GameObject cellPrefab;
+    
+    
     // Tablero de 3x3 celdas
     public CellState[,] Board { get; private set; } = new CellState[3, 3];
     public CellState CurrentTurn { get; private set; } = CellState.X;
@@ -29,9 +34,27 @@ public class GameManager : MonoBehaviour
         }
         
     }
-    
-    
-    
+
+    private void Start()
+    {
+        ResetImages();
+    }
+
+    private void ResetImages()
+    {
+        if (cellsContainer && cellPrefab)
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                GameObject cell = Instantiate(cellPrefab, cellsContainer);
+                BoardCell boardCell = cell.GetComponent<BoardCell>();
+                boardCell.row = i / 3;
+                boardCell.col = i % 3;
+            }
+        }
+    }
+
+
     // Intenta realizar una jugada en la posición (row, col)
     public bool PlayMove(int row, int col)
     {
@@ -69,6 +92,7 @@ public class GameManager : MonoBehaviour
         CurrentTurn = CellState.X;
         IsGameOver = false;
         Winner = CellState.Empty;
+        
     }
 
     private bool IsBoardFull()
